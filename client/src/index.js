@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import TextEditor from './Texteditor'
+import './style.css'
 ReactDOM.render(
   <React.StrictMode>
     <TextEditor />
