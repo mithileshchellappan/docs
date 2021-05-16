@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import { io, Socket } from "socket.io-client";
+import { io,  } from "socket.io-client";
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
@@ -44,8 +44,21 @@ export default function Texteditor() {
     }
       quill.on('text-change',handler)
       return()=>{
-          quill.of('text-change',handler)
+          quill.off('text-change',handler)
       }
   },[socket,quill]);
+
+  useEffect(() => {
+    if(socket==null||quill==null)return
+    const handler=(delta,)=>{
+      quill.updateContents(delta)
+  }
+    socket.on('receive-changes',handler)
+    return()=>{
+        socket.off('receive-changes',handler)
+    }
+},[socket,quill]);
+
+
   return <div className="container" ref={wrapperRef}></div>;
 }
